@@ -1,11 +1,11 @@
 # Ignore nested git repositories.
-blockly/
-closure-library-read-only/
+/blockly/
+/closure-library-read-only/
 
 # Ignore generated Unity files.
-unity/Library/
-unity/Temp/
-unity/*.sln
-unity/*.csproj
-unity/*.userprefs
-unity/*.pidb
+/unity/Library/
+/unity/Temp/
+/unity/*.sln
+/unity/*.csproj
+/unity/*.userprefs
+/unity/*.pidb
