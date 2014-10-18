@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: MissionControl_Glass
+  m_Shader: {fileID: 4800000, guid: 35e4b1ab9071744638ff7b36e2476eb0, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 20b84fecbfa6e471f9d21b090c16d71a, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _LightMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Cube
+        second:
+          m_Texture: {fileID: 8900000, guid: d1e36024b92cf40788c18d8e6420bdb6, type: 2}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _Lightmap
+        second:
+          m_Texture: {fileID: 2800000, guid: 87bdc54d08eaa48f99d86eb377d01c9f, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _LightmapDensity
+        second: .477611929
+      data:
+        first:
+          name: _ReflectInShadow
+        second: .179104477
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .507692337, g: .507692337, b: .507692337, a: .286274523}
+--- !u!1002 &2100001
+EditorExtensionImpl:
+  serializedVersion: 6
