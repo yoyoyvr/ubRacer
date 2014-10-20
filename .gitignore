@@ -9,3 +9,6 @@
 /unity/*.csproj
 /unity/*.userprefs
 /unity/*.pidb
+
+# Ignore test builds folder.
+/builds/
