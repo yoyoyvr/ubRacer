@@ -87,7 +87,6 @@ var ubRacer = {
     
     setValue : function(key, val) {
         ubRacer.values[key] = val;
-        ubRacer.print(key + "=" + val);
     },
     
     getValue : function(key) {
