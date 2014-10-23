@@ -33,13 +33,12 @@ public class BlocklyBridge : MonoBehaviour
             return;
         }
         
-        string[] bits = keyValue.Split(new char[] {'='}, 1);
+        string[] bits = keyValue.Split(new char[] {'='}, 2);
         if (bits.Length == 2)
         {
             string key = bits[0];
             string val = bits[1];
-            //Application.ExternalCall("ubRacer.setValue", key, val);
-            Application.ExternalCall("Alert", keyValue);
+            Application.ExternalCall("ubRacer.setValue", key, val);
         }
     }
 }

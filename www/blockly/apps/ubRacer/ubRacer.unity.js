@@ -76,20 +76,19 @@ var ubRacer = {
             }
         });
         
-        ubRacer.uPlayer.initPlugin(jQuery("#unityPlayer")[0], "racer.unity3d");
+        ubRacer.uPlayer.initPlugin(jQuery("#unityPlayer")[0], "ubRacer.unity3d");
     },
     
     values : {},
     
     setValue : function(key, val) {
         ubRacer.values[key] = val;
-        console.log(key + "=" + val);
+    },
+    
+    getValue : function(key) {
+        return ubRacer.values[key];
     }
 };
 
 // Bootstrap the player.
 ubRacer.init();
-
-Alert = function(msg) {
-    window.alert(msg);
-}
