@@ -1,3 +1,5 @@
+var blocklyBridge : GameObject;
+
 private var wheelRadius : float = 0.4;
 var suspensionRange : float = 0.1;
 var suspensionDamper : float = 50;
@@ -87,7 +89,15 @@ function Start()
 function Update()
 {		
 	var relativeVelocity : Vector3 = transform.InverseTransformDirection(rigidbody.velocity);
-	
+
+    if (blocklyBridge)
+    {
+        relativeSpeed = relativeVelocity.magnitude;
+        relativeSpeedKeyValue = gameObject.name + ".speed=" + relativeSpeed;
+        
+        blocklyBridge.SendMessage("SetValue", relativeSpeedKeyValue);
+    }
+    
 	GetInput();
 	
 	Check_If_Car_Is_Flipped();
