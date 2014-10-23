@@ -33,7 +33,7 @@ var config = {
     params: { enableDebugging:"0" }
     
 };
-var u = new UnityObject2(config);
+var uPlayer = new UnityObject2(config);
 
 jQuery(function() {
 
@@ -69,5 +69,5 @@ jQuery(function() {
             break;
         }
     });
-    u.initPlugin(jQuery("#unityPlayer")[0], "racer.unity3d");
+    uPlayer.initPlugin(jQuery("#unityPlayer")[0], "racer.unity3d");
 });
