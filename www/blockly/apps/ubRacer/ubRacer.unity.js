@@ -82,13 +82,15 @@ var ubRacer = {
     values : {},
 
     print : function(msg) {
-        ubRacer.uPlayer.SendMessage("BlocklyBridge", "Print", msg);
+        ubRacer.uPlayer.getUnity().SendMessage("Blockly", "Print", msg);
     },
     
     setValue : function(key, val) {
+        // TODO: set blockly variable?
         ubRacer.values[key] = val;
     },
     
+    // TODO: needed? or just use blockly vars?
     getValue : function(key) {
         return ubRacer.values[key];
     }

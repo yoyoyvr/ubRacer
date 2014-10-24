@@ -30,7 +30,7 @@ Blockly.Blocks['unity_print'] = {
     this.setColour(330);
     this.appendValueInput("MSG")
         .setCheck("String")
-        .appendField("");
+        .appendField("print");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);

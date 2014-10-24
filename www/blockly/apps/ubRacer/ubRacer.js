@@ -167,7 +167,16 @@ UBR.init = function() {
   // and the infinite loop detection function.
   Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
 
-  BlocklyApps.loadBlocks('');
+  var defaultXml =
+      '<xml>' +
+      '  <block type="unity_print">' +
+      '    <value name="MSG">' +
+      '      <block type="text"></block>' +
+      '    </value>' +
+      '  </block>' +
+      '</xml>';
+      
+  BlocklyApps.loadBlocks(defaultXml);
 
   if ('BlocklyStorage' in window) {
     // Hook a save function onto unload.
