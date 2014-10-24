@@ -43,3 +43,23 @@ Blockly.JavaScript['unity_print'] = function(block) {
   var code = 'ubRacer.print(' + msg + ');'
   return code;
 };
+
+Blockly.Blocks['get_stat'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(330);
+    this.appendDummyInput()
+        .appendField("get stat");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldTextInput("Car.speed"), "STAT");
+    this.setInputsInline(true);
+    this.setOutput(true, "Number");
+    this.setTooltip('');
+  }
+};
+
+Blockly.JavaScript['get_stat'] = function(block) {
+  var stat = block.getFieldValue('STAT');
+  var code = 'ubRacer.getValue("' + stat + '")';
+  return [code, Blockly.JavaScript.ORDER_MEMBER];
+};

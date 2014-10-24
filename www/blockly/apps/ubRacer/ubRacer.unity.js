@@ -85,12 +85,11 @@ var ubRacer = {
         ubRacer.uPlayer.getUnity().SendMessage("Blockly", "Print", msg);
     },
     
+    // TODO: needed? or just use blockly vars? They are just global javascript variables, is that ok?
     setValue : function(key, val) {
-        // TODO: set blockly variable?
         ubRacer.values[key] = val;
     },
     
-    // TODO: needed? or just use blockly vars?
     getValue : function(key) {
         return ubRacer.values[key];
     }
