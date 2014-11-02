@@ -1,5 +1,7 @@
 var blocklyBridge : GameObject;
 
+var Driver : DriverBase;
+
 private var wheelRadius : float = 0.4;
 var suspensionRange : float = 0.1;
 var suspensionDamper : float = 50;
@@ -97,14 +99,19 @@ function Update()
         
         blocklyBridge.SendMessage("SetValue", relativeSpeedKeyValue);
     }
-    
-	GetInput();
+
+    if (Driver)
+    {
+        GetDriverInput();
+    }
 	
 	Check_If_Car_Is_Flipped();
 	
 	UpdateWheelGraphics(relativeVelocity);
 	
 	UpdateGear(relativeVelocity);
+    
+    UpdateSensors();
 }
 
 function FixedUpdate()
@@ -253,10 +260,10 @@ function SetUpSkidmarks()
 /* Functions called from Update()                 */
 /**************************************************/
 
-function GetInput()
+function GetDriverInput()
 {
-	throttle = Input.GetAxis("Vertical");
-	steer = Input.GetAxis("Horizontal");
+	throttle = Driver.Throttle;
+	steer = Driver.Steer;
 	
 	if(throttle < 0.0)
 		brakeLights.SetFloat("_Intensity", Mathf.Abs(throttle));
@@ -268,7 +275,7 @@ function GetInput()
 
 function CheckHandbrake()
 {
-	if(Input.GetKey("space"))
+	if(Driver.Handbrake)
 	{
 		if(!handbrake)
 		{
@@ -435,6 +442,40 @@ function UpdateGear(relativeVelocity : Vector3)
 	}
 }
 
+var distanceToRightRailing : float;
+var distanceToLeftRailing : float;
+var angleToRoadCosine : float;
+
+function UpdateSensors()
+{
+    var layerMask = LayerMask.GetMask("Railings");
+    var hit : RaycastHit;
+    var pos = transform.position + Vector3.up * 1.0f;
+	if (Physics.Raycast (pos, transform.right, hit, 100.0, layerMask))
+    {
+		distanceToRightRailing = hit.distance;
+        var railingToCar = (pos - hit.point).normalized;
+        var railingToRoad = Vector3.Cross(hit.normal, Vector3.up);
+        angleToRoadCosine = Vector3.Dot(railingToCar, railingToRoad);
+        //Debug.Log("RIGHT RAILING: " + distanceToRailing);
+	}
+	if (Physics.Raycast (pos, -transform.right, hit, 100.0, layerMask))
+    {
+		distanceToLeftRailing = hit.distance;
+        //Debug.Log("RIGHT RAILING: " + distanceToRailing);
+	}
+}
+
+function OnDrawGizmos()
+{
+    var pos = transform.position + Vector3.up * 1.0f;
+    Gizmos.color = Color.red;
+    Gizmos.DrawLine(pos, pos + transform.right * distanceToRightRailing);
+    Gizmos.color = Color.yellow;
+    Gizmos.DrawLine(pos, pos - transform.right * distanceToLeftRailing);
+}
+
+
 /**************************************************/
 /* Functions called from FixedUpdate()            */
 /**************************************************/
@@ -525,14 +566,15 @@ function ApplyThrottle(canDrive : boolean, relativeVelocity : Vector3)
 	{
 		var throttleForce : float = 0;
 		var brakeForce : float = 0;
-		
+
+        var throttleAmount = throttle; //Mathf.Sign(throttle);
 		if (HaveTheSameSign(relativeVelocity.z, throttle))
 		{
 			if (!handbrake)
-				throttleForce = Mathf.Sign(throttle) * currentEnginePower * rigidbody.mass;
+				throttleForce = throttleAmount * currentEnginePower * rigidbody.mass;
 		}
 		else
-			brakeForce = Mathf.Sign(throttle) * engineForceValues[0] * rigidbody.mass;
+			brakeForce = throttleAmount * engineForceValues[0] * rigidbody.mass;
 		
 		rigidbody.AddForce(transform.forward * Time.deltaTime * (throttleForce + brakeForce));
 	}

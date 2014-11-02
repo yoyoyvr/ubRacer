@@ -391,6 +391,22 @@ GameObject:
 --- !u!1002 &100039
 EditorExtensionImpl:
   serializedVersion: 6
+--- !u!1 &100040
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400040}
+  - 114: {fileID: 11400000}
+  m_Layer: 0
+  m_Name: Driver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &400000
 Transform:
   m_ObjectHideFlags: 1
@@ -402,7 +418,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400018}
-  m_RootOrder: 6
+  m_RootOrder: 7
 --- !u!1002 &400001
 EditorExtensionImpl:
   serializedVersion: 6
@@ -417,7 +433,7 @@ Transform:
   m_LocalScale: {x: .999999642, y: 1, z: .999999642}
   m_Children: []
   m_Father: {fileID: 400018}
-  m_RootOrder: 0
+  m_RootOrder: 1
 --- !u!1002 &400003
 EditorExtensionImpl:
   serializedVersion: 6
@@ -432,7 +448,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400018}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!1002 &400005
 EditorExtensionImpl:
   serializedVersion: 6
@@ -538,6 +554,7 @@ Transform:
   m_LocalPosition: {x: 931.154907, y: 101.291428, z: 819.795044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 400040}
   - {fileID: 400002}
   - {fileID: 400038}
   - {fileID: 400036}
@@ -566,7 +583,7 @@ Transform:
   m_Children:
   - {fileID: 400014}
   m_Father: {fileID: 400018}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!1002 &400021
 EditorExtensionImpl:
   serializedVersion: 6
@@ -582,7 +599,7 @@ Transform:
   m_Children:
   - {fileID: 400016}
   m_Father: {fileID: 400018}
-  m_RootOrder: 9
+  m_RootOrder: 10
 --- !u!1002 &400023
 EditorExtensionImpl:
   serializedVersion: 6
@@ -598,7 +615,7 @@ Transform:
   m_Children:
   - {fileID: 400028}
   m_Father: {fileID: 400018}
-  m_RootOrder: 8
+  m_RootOrder: 9
 --- !u!1002 &400025
 EditorExtensionImpl:
   serializedVersion: 6
@@ -614,7 +631,7 @@ Transform:
   m_Children:
   - {fileID: 400030}
   m_Father: {fileID: 400018}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!1002 &400027
 EditorExtensionImpl:
   serializedVersion: 6
@@ -661,7 +678,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400018}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!1002 &400033
 EditorExtensionImpl:
   serializedVersion: 6
@@ -676,7 +693,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400018}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!1002 &400035
 EditorExtensionImpl:
   serializedVersion: 6
@@ -691,7 +708,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400018}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!1002 &400037
 EditorExtensionImpl:
   serializedVersion: 6
@@ -706,10 +723,22 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400018}
-  m_RootOrder: 1
+  m_RootOrder: 2
 --- !u!1002 &400039
 EditorExtensionImpl:
   serializedVersion: 6
+--- !u!4 &400040
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100040}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 400018}
+  m_RootOrder: 0
 --- !u!23 &2300000
 Renderer:
   m_ObjectHideFlags: 1
@@ -1124,6 +1153,18 @@ MeshCollider:
 --- !u!1002 &6400003
 EditorExtensionImpl:
   serializedVersion: 6
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3894e6289508f8c43ab52d74c2d29f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  car: {fileID: 11400010}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1216,6 +1257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b83093dd792f45c988ff7a08aba9bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocklyBridge: {fileID: 0}
+  Driver: {fileID: 11400000}
   suspensionRange: .100000001
   suspensionDamper: 50
   suspensionSpringFront: 18500
@@ -1241,6 +1284,9 @@ MonoBehaviour:
   - 0
   - 0
   wheelCount: 0
+  distanceToRightRailing: 0
+  distanceToLeftRailing: 0
+  angleToRoadCosine: 0
 --- !u!1002 &11400011
 EditorExtensionImpl:
   serializedVersion: 6
