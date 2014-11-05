@@ -1,7 +1,5 @@
 ﻿public class AutoSteerDriver extends InputDriver
 {
-    var car : Car;
-    
     protected function Update()
     {
         if (Input.anyKey)
@@ -10,22 +8,45 @@
             return;
         }
         
-        var left = car.distanceToLeftRailing;
-        var right = car.distanceToRightRailing;
-        var angle = car.angleToRoadCosine;
+        var left = carSensors.toLeftObstacle;
+        var right = carSensors.toRightObstacle;
 
         if (left + right > 0)
         {
-            if (Mathf.Abs(angle) > 0.1)
+            var steer = 0.5 * (right - left)/(right + left);
+            
+            if (carSensors.leftward > 0.0)
             {
-                super.Steer = Mathf.Clamp(2 * angle, -1, 1);
+                steer += 2 * carSensors.leftward;
+            }
+            else if (carSensors.rightward > 0.0)
+            {
+                steer -= 2 * carSensors.rightward;
+            }
+            
+            super.Steer = steer;
+
+            if (carSensors.toFrontObstacle < carSensors.speed * 1.0)
+            {
+                super.Throttle = -1;
+            }
+            else if (carSensors.toFrontObstacle < carSensors.speed * 2.0)
+            {
+                super.Throttle = -0.5;
+            }
+            else if (carSensors.toFrontObstacle < carSensors.speed * 3.0)
+            {
+                super.Throttle = 0;
             }
             else
             {
-                super.Steer = 0.5 * (right - left)/(right + left);
+                super.Throttle = 1;
             }
             
-            super.Throttle = Mathf.Clamp(1 - Mathf.Abs(super.Steer), -0.1, 0.1);
+            if (carSensors.speed < 10)
+            {
+                super.Throttle += 0.1;
+            }
         }
         else
         {

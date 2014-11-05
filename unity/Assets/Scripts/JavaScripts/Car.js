@@ -56,6 +56,38 @@ sound = transform.GetComponent(SoundController);
 private var canSteer : boolean;
 private var canDrive : boolean;
 
+private var sensors : CarSensorState = new CarSensorState();
+
+class CarSensorState
+{
+    var speed : float;
+    
+    var forward : float;
+    var backward : float;
+    var leftward : float;
+    var rightward : float;
+    
+    var toFrontObstacle : float;
+    var toBackObstacle : float;
+    var toLeftObstacle : float;
+    var toRightObstacle : float;
+    
+    public function CopyFrom(other : CarSensorState)
+    {
+        speed = other.speed;
+        
+        forward = other.forward;
+        backward = other.backward;
+        leftward = other.leftward;
+        rightward = other.rightward;
+        
+        toFrontObstacle = other.toFrontObstacle;
+        toBackObstacle = other.toBackObstacle;
+        toLeftObstacle = other.toLeftObstacle;
+        toRightObstacle = other.toRightObstacle;
+    }
+}
+
 class Wheel
 {
 	var collider : WheelCollider;
@@ -100,18 +132,13 @@ function Update()
         blocklyBridge.SendMessage("SetValue", relativeSpeedKeyValue);
     }
 
-    if (Driver)
-    {
-        GetDriverInput();
-    }
+    GetDriverInput();
 	
 	Check_If_Car_Is_Flipped();
 	
 	UpdateWheelGraphics(relativeVelocity);
 	
 	UpdateGear(relativeVelocity);
-    
-    UpdateSensors();
 }
 
 function FixedUpdate()
@@ -130,6 +157,8 @@ function FixedUpdate()
 	ApplyThrottle(canDrive, relativeVelocity);
 	
 	ApplySteering(canSteer, relativeVelocity);
+    
+    UpdateSensors(relativeVelocity);
 }
 
 /**************************************************/
@@ -262,20 +291,23 @@ function SetUpSkidmarks()
 
 function GetDriverInput()
 {
-	throttle = Driver.Throttle;
-	steer = Driver.Steer;
-	
-	if(throttle < 0.0)
-		brakeLights.SetFloat("_Intensity", Mathf.Abs(throttle));
-	else
-		brakeLights.SetFloat("_Intensity", 0.0);
-	
-	CheckHandbrake();
+    if (Driver)
+    {
+        throttle = Driver.Throttle;
+        steer = Driver.Steer;
+        
+        if(throttle < 0.0)
+            brakeLights.SetFloat("_Intensity", Mathf.Abs(throttle));
+        else
+            brakeLights.SetFloat("_Intensity", 0.0);
+        
+        CheckHandbrake(Driver.Handbrake);
+    }
 }
 
-function CheckHandbrake()
+function CheckHandbrake(handbrakeApplied : boolean)
 {
-	if(Driver.Handbrake)
+	if(handbrakeApplied)
 	{
 		if(!handbrake)
 		{
@@ -442,39 +474,55 @@ function UpdateGear(relativeVelocity : Vector3)
 	}
 }
 
-var distanceToRightRailing : float;
-var distanceToLeftRailing : float;
-var angleToRoadCosine : float;
-
-function UpdateSensors()
+function UpdateSensors(relativeVelocity : Vector3)
 {
+    sensors.speed = relativeVelocity.magnitude;
+    
     var layerMask = LayerMask.GetMask("Railings");
     var hit : RaycastHit;
     var pos = transform.position + Vector3.up * 1.0f;
-	if (Physics.Raycast (pos, transform.right, hit, 100.0, layerMask))
-    {
-		distanceToRightRailing = hit.distance;
-        var railingToCar = (pos - hit.point).normalized;
-        var railingToRoad = Vector3.Cross(hit.normal, Vector3.up);
-        angleToRoadCosine = Vector3.Dot(railingToCar, railingToRoad);
-        //Debug.Log("RIGHT RAILING: " + distanceToRailing);
-	}
-	if (Physics.Raycast (pos, -transform.right, hit, 100.0, layerMask))
-    {
-		distanceToLeftRailing = hit.distance;
-        //Debug.Log("RIGHT RAILING: " + distanceToRailing);
-	}
-}
 
-function OnDrawGizmos()
-{
-    var pos = transform.position + Vector3.up * 1.0f;
-    Gizmos.color = Color.red;
-    Gizmos.DrawLine(pos, pos + transform.right * distanceToRightRailing);
-    Gizmos.color = Color.yellow;
-    Gizmos.DrawLine(pos, pos - transform.right * distanceToLeftRailing);
+    var road = Vector3.zero;
+    
+    // Note: if no hit then keep previous value.
+	if (Physics.Raycast(pos, transform.right, hit, 100.0, layerMask))
+    {
+		sensors.toRightObstacle = hit.distance;
+        road = road - Vector3.Cross(hit.normal, Vector3.up);
+	}
+    
+	if (Physics.Raycast(pos, -transform.right, hit, 100.0, layerMask))
+    {
+		sensors.toLeftObstacle = hit.distance;
+        road = road + Vector3.Cross(hit.normal, Vector3.up);
+	}
+    
+	if (Physics.Raycast(pos, transform.forward, hit, 200.0, layerMask))
+    {
+		sensors.toFrontObstacle = hit.distance;
+	}
+    
+	if (Physics.Raycast(pos, -transform.forward, hit, 200.0, layerMask))
+    {
+		sensors.toBackObstacle = hit.distance;
+	}
+    
+    if (road != Vector3.zero)
+    {
+        road.Normalize();
+        
+        // TODO: remove redundancy here
+        sensors.forward = Vector3.Dot(road, transform.forward);
+        sensors.backward = Vector3.Dot(road, -transform.forward);   // -forward
+        sensors.leftward = Vector3.Dot(road, transform.right);      // 1 - forward
+        sensors.rightward = Vector3.Dot(road, -transform.right);    // -leftward
+    }
+    
+    if (Driver)
+    {
+        Driver.UpdateSensors(sensors);
+    }
 }
-
 
 /**************************************************/
 /* Functions called from FixedUpdate()            */

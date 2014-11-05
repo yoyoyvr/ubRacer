@@ -176,18 +176,20 @@ function DoTweaks()
 			return;
 		}
 	}
+    
+    var currentQualityLevel = QualitySettings.GetQualityLevel();
 	if(fps < 20)
 	{
-		if(QualitySettings.currentLevel > QualityLevel.Fastest)
+		if(currentQualityLevel > QualityLevel.Fastest)
 			QualitySettings.DecreaseLevel();
 	}
 	else if(fps > highFPS)
 	{
-		if(QualitySettings.currentLevel < QualityLevel.Fantastic)
+		if(currentQualityLevel < QualityLevel.Fantastic)
 			QualitySettings.IncreaseLevel();
 	}
 	
-	if(QualitySettings.currentLevel < QualityLevel.Good)
+	if(currentQualityLevel < QualityLevel.Good)
 	{
 		var sh : Shader = Shader.Find("VertexLit");
 		var bumpedObjects : GameObject[] = GameObject.FindGameObjectsWithTag("Bumped");

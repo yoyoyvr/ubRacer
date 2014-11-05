@@ -51,5 +51,5 @@ function Update()
 
 function OnGUI()
 {
-	GUI.Box(new Rect(Screen.width-160, 10, 150, 40), fps.ToString("f2") + " | QSetting: " + QualitySettings.currentLevel);
+	GUI.Box(new Rect(Screen.width-160, 10, 150, 40), fps.ToString("f2") + " | QSetting: " + QualitySettings.GetQualityLevel());
 }
