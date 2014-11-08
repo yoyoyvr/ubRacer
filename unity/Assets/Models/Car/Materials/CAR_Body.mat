@@ -80,16 +80,16 @@ Material:
         second: .547169805
       data:
         first:
+          name: _ReflectInShadow
+        second: .188679248
+      data:
+        first:
           name: _DecalColoring
         second: 0
       data:
         first:
           name: _Sparkle
         second: .152830198
-      data:
-        first:
-          name: _ReflectInShadow
-        second: .188679248
       data:
         first:
           name: _SparkleDensity

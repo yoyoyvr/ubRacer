@@ -1164,7 +1164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3894e6289508f8c43ab52d74c2d29f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  car: {fileID: 11400010}
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1284,9 +1283,6 @@ MonoBehaviour:
   - 0
   - 0
   wheelCount: 0
-  distanceToRightRailing: 0
-  distanceToLeftRailing: 0
-  angleToRoadCosine: 0
 --- !u!1002 &11400011
 EditorExtensionImpl:
   serializedVersion: 6

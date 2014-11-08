@@ -1,8 +1,10 @@
-﻿protected var carSensors : CarSensorState = null;
+﻿protected var sensors : CarSensorState = new CarSensorState();
 
 private var m_Throttle : float;
 private var m_Steer : float;
 private var m_Handbrake : boolean;
+
+private var m_Rigidbody : Rigidbody;
 
 function get Throttle() : float { return m_Throttle; }
 protected function set Throttle(value : float)
@@ -23,39 +25,110 @@ protected function set Steer(value : float)
 function get Handbrake() : boolean { return m_Handbrake; }
 protected function set Handbrake(value : boolean) { m_Handbrake = value; }
 
-public function UpdateSensors(sensors : CarSensorState)
+protected function Awake()
 {
-    carSensors.CopyFrom(sensors);
+    // Assumes driver is parented to its vehicle.
+    m_Rigidbody = GetComponentInParent(Rigidbody);
 }
 
-function Awake()
+protected function FixedUpdate()
 {
-    carSensors = new CarSensorState();
-}
-
-function OnGUI()
-{
-    if (carSensors)
-    {
-        GUILayout.Label("forward: " + carSensors.forward);
-        GUILayout.Label("backward: " + carSensors.backward);
-        GUILayout.Label("leftward: " + carSensors.leftward);
-        GUILayout.Label("rightward: " + carSensors.rightward);
-    }
+    sensors.Update(m_Rigidbody);
 }
 
 function OnDrawGizmos()
 {
-    if (carSensors && Application.isPlaying)
+    if (sensors && Application.isPlaying)
     {
-        var pos = transform.position + Vector3.up * 1.0f;
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(pos, pos + transform.right * carSensors.toRightObstacle);
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(pos, pos - transform.right * carSensors.toLeftObstacle);
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(pos, pos + transform.forward * carSensors.toFrontObstacle);
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(pos, pos - transform.forward * carSensors.toBackObstacle);
+        for (var feeler in sensors.feelers)
+        {
+            Gizmos.color = feeler.color;
+            Gizmos.DrawLine(feeler.start, feeler.point);
+        }
+    }
+}
+
+class Feeler
+{
+    // Inputs control the raycast.
+    var name = "";
+    var color = Color.magenta;
+    var offset : Vector3;
+    var direction : Vector3;
+    var length : float;
+    var layers : LayerMask = -1;
+    
+    // Outputs based on detected hit.
+    var sensed : boolean;
+    var start : Vector3;
+    var point : Vector3;
+    var distance : float;
+    var normal : Vector3;
+    var hit : RaycastHit;
+    
+    function Feeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask)
+    {
+        this.name = name;
+        this.color = color;
+        this.offset = offset;
+        this.direction = direction;
+        this.length = length;
+        this.layers = layers;
+    }
+    
+    function Sense(relativeTo : Transform)
+    {
+        this.start = relativeTo.position
+            + relativeTo.forward * this.offset.x
+            + relativeTo.up * this.offset.y
+            + relativeTo.right * this.offset.z;
+        var dir =
+              relativeTo.forward * this.direction.x
+            + relativeTo.up * this.direction.y
+            + relativeTo.right * this.direction.z;
+    
+        // Note: if no hit then keep previous value.
+        this.sensed = Physics.Raycast(this.start, dir, this.hit, this.length, this.layers);
+        if (this.sensed)
+        {
+            this.point = hit.point;
+            this.distance = hit.distance;
+            this.normal = relativeTo.InverseTransformDirection(hit.normal);
+        }
+    }
+}
+
+class CarSensorState
+{
+    var speed : float;
+    var feelers = new Array();
+    
+    function Update(rigidbody : Rigidbody)
+    {
+        // The rigidbody velocity is always given in world space, but in order to work in local space of the car model we need to transform it first.
+        var xform = rigidbody.transform;
+        var relativeVelocity : Vector3 = xform.InverseTransformDirection(rigidbody.velocity);
+        this.speed = relativeVelocity.magnitude;
+        
+        for (var i = 0; i < this.feelers.length; ++i)
+        {
+            this.feelers[i].Sense(xform);
+        }
+    }
+    
+    function AddFeeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask)
+    {
+        feelers.push(new Feeler(name, color, offset, direction, length, layers));
+    }
+    
+    function GetFeeler(name : String) : Feeler
+    {
+        for (var feeler in this.feelers)
+        {
+            if (feeler.name == name)
+            {
+                return feeler;
+            }
+        }
     }
 }
