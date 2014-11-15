@@ -1161,9 +1161,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 100040}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3894e6289508f8c43ab52d74c2d29f98, type: 3}
+  m_Script: {fileID: 11500000, guid: cc6ac3d2488f86e43ac8f394d553d9eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blocklyBridge: {fileID: 0}
+  car: {fileID: 11400010}
+  weightMiddle: 0
+  weightAlignment: .5
+  simulateBlockly: 0
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1256,7 +1261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b83093dd792f45c988ff7a08aba9bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blocklyBridge: {fileID: 0}
   Driver: {fileID: 11400000}
   suspensionRange: .100000001
   suspensionDamper: 50

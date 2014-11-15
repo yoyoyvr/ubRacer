@@ -5,6 +5,8 @@
     
     public var weightMiddle = 0.2;
     public var weightAlignment = 0.5;
+    
+    public var simulateBlockly = false;
 
     // Called from blockly on web page to add sensor.
     public function ubCarAddSensor(msg : String)
@@ -70,7 +72,10 @@
         
         super.Awake();
         
-        BlocklyAwake();
+        if (simulateBlockly)
+        {
+            BlocklyAwake();
+        }
     }
     
     protected function Update()
@@ -88,7 +93,10 @@
             return;
         }
         
-        BlocklyUpdate();
+        if (simulateBlockly)
+        {
+            BlocklyUpdate();
+        }
     }
 
     // Pretend this is blockly running in the web browser.
