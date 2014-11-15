@@ -10,7 +10,8 @@ public class EffectController : MonoBehaviour
 	
 	void Update()
 	{
-		if(QualitySettings.currentLevel < QualityLevel.Good)
+        int goodQuality = System.Array.IndexOf(QualitySettings.names, "Good");
+		if(QualitySettings.GetQualityLevel() < goodQuality)
 		{
 			if (generate2dReflection)
 				generate2dReflection.enabled = false;

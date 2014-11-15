@@ -1,5 +1,3 @@
-var blocklyBridge : GameObject;
-
 var Driver : DriverBase;
 
 private var wheelRadius : float = 0.4;
@@ -91,14 +89,6 @@ function Start()
 function Update()
 {		
 	var relativeVelocity : Vector3 = transform.InverseTransformDirection(rigidbody.velocity);
-
-    if (blocklyBridge)
-    {
-        relativeSpeed = relativeVelocity.magnitude;
-        relativeSpeedKeyValue = gameObject.name + ".speed=" + relativeSpeed;
-        
-        blocklyBridge.SendMessage("SetValue", relativeSpeedKeyValue);
-    }
 
     GetDriverInput();
 	

@@ -85,6 +85,19 @@ var ubRacer = {
         ubRacer.uPlayer.getUnity().SendMessage("Blockly", "Print", msg);
     },
     
+    carAddSensor : function(carName, sensorName, direction, length) {
+        var msg = sensorName + "," + direction + "," + length;
+        ubRacer.uPlayer.getUnity().SendMessage(carName + "/Driver", "ubCarAddSensor", msg);
+    },
+    
+    carSteer : function(carName, steering) {
+        ubRacer.uPlayer.getUnity().SendMessage(carName + "/Driver", "ubCarSteer", steering);
+    },
+    
+    carThrottle : function(carName, throttle) {
+        ubRacer.uPlayer.getUnity().SendMessage(carName + "/Driver", "ubCarThrottle", throttle);
+    },
+    
     // TODO: needed? or just use blockly vars? They are just global javascript variables, is that ok?
     setValue : function(key, val) {
         ubRacer.values[key] = val;

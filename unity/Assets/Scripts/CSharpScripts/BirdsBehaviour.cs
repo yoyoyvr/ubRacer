@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+
+using UnityEngine;
 
 public class BirdsBehaviour : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class BirdsBehaviour : MonoBehaviour
 	
 	void Start()
 	{
-		if(QualitySettings.currentLevel < QualityLevel.Good)
+        int goodQuality = System.Array.IndexOf(QualitySettings.names, "Good");
+		if(QualitySettings.GetQualityLevel() < goodQuality)
 		{
 			this.enabled = false;
 			return;
