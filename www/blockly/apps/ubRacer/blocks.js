@@ -25,16 +25,16 @@
 // Extensions to Blockly's language and JavaScript generator.
 
 // ---------------------------------------------------------------------------------------
-// print (over Unity view)
+// display (over Unity view)
 //
 
-Blockly.Blocks['ubracer_print'] = {
+Blockly.Blocks['ubracer_display'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
     this.setColour(290);
     this.appendValueInput("MSG")
         .setCheck("String")
-        .appendField("print");
+        .appendField("display");
     this.setInputsInline(true);
     this.setPreviousStatement(true);
     this.setNextStatement(true);
@@ -42,9 +42,9 @@ Blockly.Blocks['ubracer_print'] = {
   }
 };
 
-Blockly.JavaScript['ubracer_print'] = function(block) {
+Blockly.JavaScript['ubracer_display'] = function(block) {
   var msg = Blockly.JavaScript.valueToCode(block, 'MSG', Blockly.JavaScript.ORDER_ATOMIC);
-  var code = 'ubRacer.print(' + msg + ');'
+  var code = 'ubRacer.display(' + msg + ');'
   return code;
 };
 
@@ -63,7 +63,7 @@ Blockly.Blocks['ubracer_addsensor'] = {
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("named")
-        .appendField(new Blockly.FieldTextInput("name"), "SENSORNAME");
+        .appendField(new Blockly.FieldTextInput("sensor"), "SENSORNAME");
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("direction")
@@ -79,6 +79,15 @@ Blockly.Blocks['ubracer_addsensor'] = {
     this.setPreviousStatement(true);
     this.setNextStatement(true);
     this.setTooltip('');
+  },
+  getVars: function() {
+    var carname = this.getFieldValue('CARNAME');
+    var sensorname = this.getFieldValue('SENSORNAME');
+    
+    var sensorVar = carname + '.' + sensorname;
+    var sensorSensedVar = carname + '.' + sensorname + ".sensed";
+    
+    return [sensorVar, sensorSensedVar];
   }
 };
 
@@ -93,9 +102,10 @@ Blockly.JavaScript['ubracer_addsensor'] = function(block) {
   var sensorSensedVar = Blockly.JavaScript.variableDB_.getName(carname + '.' + sensorname + ".sensed", Blockly.Variables.NAME_TYPE);
   
   var code =
+    '// Add sensor.\n' +
+    'ubRacer.addSensor("' + carname + '","' + sensorname + '",' + direction + ',' + length + ',"' + colour + '");\n' +
     sensorVar + ' = ' + length + ';\n' +
-    sensorSensedVar + ' = false;\n' +
-    'ubRacer.addSensor("' + carname + '","' + sensorname + '",' + direction + ',' + length + ',"' + colour + '");\n'
+    sensorSensedVar + ' = false;\n\n';
     
   return code;
 };

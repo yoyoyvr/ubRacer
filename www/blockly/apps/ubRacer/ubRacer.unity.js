@@ -81,7 +81,7 @@ var ubRacer = {
     
     values : {},
 
-    print : function(msg) {
+    display : function(msg) {
         ubRacer.uPlayer.getUnity().SendMessage("Blockly", "Print", msg);
     },
     
