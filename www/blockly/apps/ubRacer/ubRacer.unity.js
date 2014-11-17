@@ -76,7 +76,7 @@ var ubRacer = {
             }
         });
         
-        ubRacer.uPlayer.initPlugin(jQuery("#unityPlayer")[0], "ubRacer.unity3d");
+        //ubRacer.uPlayer.initPlugin(jQuery("#unityPlayer")[0], "ubRacer.unity3d");
     },
     
     values : {},
@@ -85,16 +85,16 @@ var ubRacer = {
         ubRacer.uPlayer.getUnity().SendMessage("Blockly", "Print", msg);
     },
     
-    carAddSensor : function(carName, sensorName, direction, length) {
-        var msg = sensorName + "," + direction + "," + length;
+    addSensor : function(carName, sensorName, direction, length, colour) {
+        var msg = sensorName + "," + direction + "," + length + "," + colour;
         ubRacer.uPlayer.getUnity().SendMessage(carName + "/Driver", "ubCarAddSensor", msg);
     },
     
-    carSteer : function(carName, steering) {
+    steer : function(carName, steering) {
         ubRacer.uPlayer.getUnity().SendMessage(carName + "/Driver", "ubCarSteer", steering);
     },
     
-    carThrottle : function(carName, throttle) {
+    throttle : function(carName, throttle) {
         ubRacer.uPlayer.getUnity().SendMessage(carName + "/Driver", "ubCarThrottle", throttle);
     },
     

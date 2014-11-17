@@ -169,33 +169,6 @@ UBR.init = function() {
 
   var defaultXml =
 '<xml xmlns="http://www.w3.org/1999/xhtml">' +
-'  <block id="1" type="unity_print" y="0" x="0" inline="true">' +
-'    <value name="MSG">' +
-'      <block id="2" type="text_join" inline="false">' +
-'        <mutation items="3" />' +
-'        <value name="ADD0">' +
-'          <block id="26" type="text">' +
-'            <field name="TEXT">Hello Unity! You are going </field>' +
-'          </block>' +
-'        </value>' +
-'        <value name="ADD1">' +
-'          <block id="63" type="math_round" inline="false">' +
-'            <field name="OP">ROUND</field>' +
-'            <value name="NUM">' +
-'              <block id="3" type="get_stat">' +
-'                <field name="STAT">Car.speed</field>' +
-'              </block>' +
-'            </value>' +
-'          </block>' +
-'        </value>' +
-'        <value name="ADD2">' +
-'          <block id="44" type="text">' +
-'            <field name="TEXT"> km/h!</field>' +
-'          </block>' +
-'        </value>' +
-'      </block>' +
-'    </value>' +
-'  </block>' +
 '</xml>';
       
   BlocklyApps.loadBlocks(defaultXml);

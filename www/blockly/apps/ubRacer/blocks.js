@@ -24,10 +24,14 @@
 
 // Extensions to Blockly's language and JavaScript generator.
 
-Blockly.Blocks['unity_print'] = {
+// ---------------------------------------------------------------------------------------
+// print (over Unity view)
+//
+
+Blockly.Blocks['ubracer_print'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(330);
+    this.setColour(290);
     this.appendValueInput("MSG")
         .setCheck("String")
         .appendField("print");
@@ -38,28 +42,120 @@ Blockly.Blocks['unity_print'] = {
   }
 };
 
-Blockly.JavaScript['unity_print'] = function(block) {
+Blockly.JavaScript['ubracer_print'] = function(block) {
   var msg = Blockly.JavaScript.valueToCode(block, 'MSG', Blockly.JavaScript.ORDER_ATOMIC);
   var code = 'ubRacer.print(' + msg + ');'
   return code;
 };
 
-Blockly.Blocks['get_stat'] = {
+
+// ---------------------------------------------------------------------------------------
+// addsensor: https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#jqqhsd
+//
+
+Blockly.Blocks['ubracer_addsensor'] = {
   init: function() {
     this.setHelpUrl('http://www.example.com/');
-    this.setColour(330);
+    this.setColour(290);
     this.appendDummyInput()
-        .appendField("get stat");
+        .appendField("add sensor to")
+        .appendField(new Blockly.FieldTextInput("car"), "CARNAME");
     this.appendDummyInput()
-        .appendField(new Blockly.FieldTextInput("Car.speed"), "STAT");
-    this.setInputsInline(true);
-    this.setOutput(true, "Number");
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("named")
+        .appendField(new Blockly.FieldTextInput("name"), "SENSORNAME");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("direction")
+        .appendField(new Blockly.FieldAngle("0"), "DIRECTION");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("length")
+        .appendField(new Blockly.FieldTextInput("100"), "LENGTH");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("colour")
+        .appendField(new Blockly.FieldColour("#33ff33"), "COLOUR");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
     this.setTooltip('');
   }
 };
 
-Blockly.JavaScript['get_stat'] = function(block) {
-  var stat = block.getFieldValue('STAT');
-  var code = 'ubRacer.getValue("' + stat + '")';
-  return [code, Blockly.JavaScript.ORDER_MEMBER];
+Blockly.JavaScript['ubracer_addsensor'] = function(block) {
+  var carname = block.getFieldValue('CARNAME');
+  var sensorname = block.getFieldValue('SENSORNAME');
+  var direction = block.getFieldValue('DIRECTION');
+  var length = block.getFieldValue('LENGTH');
+  var colour = block.getFieldValue('COLOUR');
+  
+  var sensorVar = Blockly.JavaScript.variableDB_.getName(carname + '.' + sensorname, Blockly.Variables.NAME_TYPE);
+  var sensorSensedVar = Blockly.JavaScript.variableDB_.getName(carname + '.' + sensorname + ".sensed", Blockly.Variables.NAME_TYPE);
+  
+  var code =
+    sensorVar + ' = ' + length + ';\n' +
+    sensorSensedVar + ' = false;\n' +
+    'ubRacer.addSensor("' + carname + '","' + sensorname + '",' + direction + ',' + length + ',"' + colour + '");\n'
+    
+  return code;
+};
+
+
+// ---------------------------------------------------------------------------------------
+// steer: https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#x86qtv
+//
+
+Blockly.Blocks['ubracer_steer'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(290);
+    this.appendDummyInput()
+        .appendField("set")
+        .appendField(new Blockly.FieldTextInput("car"), "CARNAME");
+    this.appendValueInput("STEER")
+        .setCheck("Number")
+        .appendField("steering to");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.JavaScript['ubracer_steer'] = function(block) {
+  var carname = block.getFieldValue('CARNAME');
+  var steer = Blockly.JavaScript.valueToCode(block, 'STEER', Blockly.JavaScript.ORDER_ATOMIC);
+  
+  var code = 'ubRacer.steer("' + carname + '",' + steer + ');\n'
+  return code;
+};
+
+
+// ---------------------------------------------------------------------------------------
+// throttle: https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#7fhwnn
+//
+
+Blockly.Blocks['ubracer_throttle'] = {
+  init: function() {
+    this.setHelpUrl('http://www.example.com/');
+    this.setColour(290);
+    this.appendDummyInput()
+        .appendField("set")
+        .appendField(new Blockly.FieldTextInput("car"), "CARNAME");
+    this.appendValueInput("THROTTLE")
+        .setCheck("Number")
+        .appendField("throttle to");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('');
+  }
+};
+
+Blockly.JavaScript['ubracer_throttle'] = function(block) {
+  var carname = block.getFieldValue('CARNAME');
+  var throttle = Blockly.JavaScript.valueToCode(block, 'THROTTLE', Blockly.JavaScript.ORDER_ATOMIC);
+  
+  var code = 'ubRacer.throttle("' + carname + '",' + throttle + ');\n'
+  return code;
 };

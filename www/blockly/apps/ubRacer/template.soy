@@ -100,8 +100,10 @@
 {template .toolbox}
   <xml id="toolbox" style="display: none">
     <category name="{msg meaning="Apps.catRacer" desc="IBID"}Racer{/msg}">
-      <block type="unity_print"></block>
-      <block type="get_stat"></block>
+      <block type="ubracer_addsensor"></block>
+      <block type="ubracer_steer"></block>
+      <block type="ubracer_throttle"></block>
+      <block type="ubracer_print"></block>
     </category>
     <category name="{msg meaning="Apps.catLogic" desc="IBID"}Logic{/msg}">
       <block type="controls_if"></block>
