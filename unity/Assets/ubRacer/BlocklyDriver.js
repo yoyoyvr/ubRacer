@@ -9,33 +9,42 @@
     public var simulateBlockly = false;
 
     // Called from blockly on web page to add sensor.
-    public function ubCarAddSensor(msg : String)
+    public function ubAddSensor(msg : String)
     {
         var params = msg.Split(","[0]);
         var name = params[0];
         var direction = parseFloat(params[1]) * Mathf.Deg2Rad;
         var length = parseFloat(params[2]);
+        var colour = HexToColor(params[3].Substring(1));    // Strip off leading "#" symbol.
         
         var xdir = Mathf.Cos(direction);
         var zdir = Mathf.Sin(direction);
         
         super.sensors.AddFeeler(
             name,
-            Color.green,
+            colour,
             new Vector3(0, 1, 0),       // offset
             new Vector3(xdir, 0, zdir), // direction
             length,                     // length
             -1);                        // layers
     }
     
+    function HexToColor(hex : String) : Color
+    {
+        var r = byte.Parse(hex.Substring(0,2), System.Globalization.NumberStyles.HexNumber);
+        var g = byte.Parse(hex.Substring(2,2), System.Globalization.NumberStyles.HexNumber);
+        var b = byte.Parse(hex.Substring(4,2), System.Globalization.NumberStyles.HexNumber);
+        return new Color32(r,g,b, 255);
+    }    
+   
     // Called from blockly on web page to update steering.
-    public function ubCarSteer(msg : String)
+    public function ubSteer(msg : String)
     {
         super.Steer = parseFloat(msg);
     }
     
     // Called from blockly on web page to update throttle.
-    public function ubCarThrottle(msg : String)
+    public function ubThrottle(msg : String)
     {
         super.Throttle = parseFloat(msg);
     }
@@ -102,8 +111,8 @@
     // Pretend this is blockly running in the web browser.
     function BlocklyAwake()
     {
-        ubCarAddSensor("right,35,100");
-        ubCarAddSensor("left,-35,100");
+        ubAddSensor("right,35,100,#ff00ff");
+        ubAddSensor("left,-35,100,#00ff00");
     }
     
     function BlocklyUpdate()
@@ -155,7 +164,7 @@
             throttle = 0;
         }
         
-        ubCarSteer(steer.ToString());
-        ubCarThrottle(throttle.ToString());
+        ubSteer(steer.ToString());
+        ubThrottle(throttle.ToString());
     }
 }

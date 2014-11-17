@@ -1,4 +1,4 @@
-﻿protected var sensors : CarSensorState = new CarSensorState();
+﻿protected var sensors : CarSensorState;
 
 private var m_Throttle : float;
 private var m_Steer : float;
@@ -27,6 +27,8 @@ protected function set Handbrake(value : boolean) { m_Handbrake = value; }
 
 protected function Awake()
 {
+    sensors = new CarSensorState(gameObject);
+    
     // Assumes driver is parented to its vehicle.
     m_Rigidbody = GetComponentInParent(Rigidbody);
 }
@@ -66,7 +68,9 @@ class Feeler
     var normal : Vector3;
     var hit : RaycastHit;
     
-    function Feeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask)
+    var lineRenderer : LineRenderer;
+    
+    function Feeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask, gameObject : GameObject)
     {
         this.name = name;
         this.color = color;
@@ -74,6 +78,16 @@ class Feeler
         this.direction = direction;
         this.length = length;
         this.layers = layers;
+        
+        var feelerObject = new GameObject(name);
+        feelerObject.transform.parent = gameObject.transform;
+        feelerObject.transform.localPosition = Vector3.zero;
+        
+        lineRenderer = feelerObject.AddComponent("LineRenderer");
+        lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+        lineRenderer.SetColors(color, color);
+        lineRenderer.SetWidth(0.02, 0.2);
+        lineRenderer.SetVertexCount(2);
     }
     
     function Sense(relativeTo : Transform)
@@ -94,6 +108,14 @@ class Feeler
             this.point = hit.point;
             this.distance = hit.distance;
             this.normal = relativeTo.InverseTransformDirection(hit.normal);
+            lineRenderer.SetPosition(0, this.start);
+            lineRenderer.SetPosition(1, hit.point);
+        }
+        else
+        {
+            // Hide the line when nothing sensed.
+            lineRenderer.SetPosition(0, this.start);
+            lineRenderer.SetPosition(1, this.start);
         }
     }
 }
@@ -102,6 +124,12 @@ class CarSensorState
 {
     var speed : float;
     var feelers = new Array();
+    var gameObject : GameObject;
+    
+    function CarSensorState(gameObject : GameObject)
+    {
+        this.gameObject = gameObject;
+    }
     
     function Update(rigidbody : Rigidbody)
     {
@@ -118,7 +146,7 @@ class CarSensorState
     
     function AddFeeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask)
     {
-        feelers.push(new Feeler(name, color, offset, direction, length, layers));
+        feelers.push(new Feeler(name, color, offset, direction, length, layers, gameObject));
     }
     
     function GetFeeler(name : String) : Feeler
