@@ -1210,7 +1210,7 @@ GameObject:
   - 114: {fileID: 1000}
   - 114: {fileID: 999}
   m_Layer: 12
-  m_Name: Car
+  m_Name: car
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17897,6 +17897,18 @@ Prefab:
       propertyPath: blocklyBridge
       value: 
       objectReference: {fileID: 780113522}
+    - target: {fileID: 11400000, guid: cee848381ce4c475e8c14e1a67ad1ddb, type: 2}
+      propertyPath: simulateBlockly
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100018, guid: cee848381ce4c475e8c14e1a67ad1ddb, type: 2}
+      propertyPath: m_Name
+      value: car
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: cee848381ce4c475e8c14e1a67ad1ddb, type: 2}
+      propertyPath: sensorLineMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 77f677c1e4aa6c14aaf6a83e2406a5e9, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cee848381ce4c475e8c14e1a67ad1ddb, type: 2}
   m_RootGameObject: {fileID: 72}
@@ -17971,8 +17983,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc6ac3d2488f86e43ac8f394d553d9eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sensorLineMaterial: {fileID: 2100000, guid: 77f677c1e4aa6c14aaf6a83e2406a5e9, type: 2}
   blocklyBridge: {fileID: 780113522}
   car: {fileID: 1002}
   weightMiddle: 0
   weightAlignment: .5
-  simulateBlockly: 0
+  simulateBlockly: 1

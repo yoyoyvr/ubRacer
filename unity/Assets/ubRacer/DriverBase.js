@@ -1,4 +1,6 @@
-﻿protected var sensors : CarSensorState;
+﻿var sensorLineMaterial : Material;
+
+protected var sensors : CarSensorState;
 
 private var m_Throttle : float;
 private var m_Steer : float;
@@ -27,7 +29,7 @@ protected function set Handbrake(value : boolean) { m_Handbrake = value; }
 
 protected function Awake()
 {
-    sensors = new CarSensorState(gameObject);
+    sensors = new CarSensorState(gameObject, sensorLineMaterial);
     
     // Assumes driver is parented to its vehicle.
     m_Rigidbody = GetComponentInParent(Rigidbody);
@@ -70,7 +72,7 @@ class Feeler
     
     var lineRenderer : LineRenderer;
     
-    function Feeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask, gameObject : GameObject)
+    function Feeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask, gameObject : GameObject, sensorLineMaterial : Material)
     {
         this.name = name;
         this.color = color;
@@ -84,7 +86,7 @@ class Feeler
         feelerObject.transform.localPosition = Vector3.zero;
         
         lineRenderer = feelerObject.AddComponent("LineRenderer");
-        lineRenderer.material = new Material(Shader.Find("Particles/Additive"));
+        lineRenderer.material = sensorLineMaterial;
         lineRenderer.SetColors(color, color);
         lineRenderer.SetWidth(0.02, 0.2);
         lineRenderer.SetVertexCount(2);
@@ -125,10 +127,12 @@ class CarSensorState
     var speed : float;
     var feelers = new Array();
     var gameObject : GameObject;
+    var sensorLineMaterial : Material;
     
-    function CarSensorState(gameObject : GameObject)
+    function CarSensorState(gameObject : GameObject, sensorLineMaterial : Material)
     {
         this.gameObject = gameObject;
+        this.sensorLineMaterial = sensorLineMaterial;
     }
     
     function Update(rigidbody : Rigidbody)
@@ -146,7 +150,7 @@ class CarSensorState
     
     function AddFeeler(name : String, color : Color, offset : Vector3, direction : Vector3, length : float, layers : LayerMask)
     {
-        feelers.push(new Feeler(name, color, offset, direction, length, layers, gameObject));
+        feelers.push(new Feeler(name, color, offset, direction, length, layers, gameObject, sensorLineMaterial));
     }
     
     function GetFeeler(name : String) : Feeler

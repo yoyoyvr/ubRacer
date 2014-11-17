@@ -76,7 +76,7 @@ var ubRacer = {
             }
         });
         
-        //ubRacer.uPlayer.initPlugin(jQuery("#unityPlayer")[0], "ubRacer.unity3d");
+        ubRacer.uPlayer.initPlugin(jQuery("#unityPlayer")[0], "ubRacer.unity3d");
     },
     
     values : {},
