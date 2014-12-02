@@ -21,12 +21,6 @@
  * @author yoyo@zeroandone.ca (Yossarian King)
  */
 
- 
- /**
-  * Following is mostly verbatim from the standard Unity web player template
-  * html generated when making a web build.
-  */
-
 // Put everything in a namespace.
 var ubRacer = {
 
@@ -105,6 +99,44 @@ var ubRacer = {
     
     getValue : function(key) {
         return ubRacer.values[key];
+    },
+    
+    initBlocklyInterpreter : function(interpreter, scope) {
+        
+        var wrapper;
+        
+        /* alert() example
+        wrapper = function(msg) { return interpreter.createPrimitive(alert(msg)); };
+        interpreter.setProperty(scope, 'alert', interpreter.createNativeFunction(wrapper));
+        */
+        
+        // ubRacer object.
+        ubRacerObject = interpreter.createPrimitive(ubRacer);
+        wrapper = function() { return ubRacerObject; };
+        interpreter.ubRacer = interpreter.createNativeFunction(wrapper);
+        interpreter.setProperty(scope, 'ubRacer', interpreter.ubRacer);
+
+        // ubRacer methods.
+        // TODO: the ubRacer methods are pretty much just wrappers in the first place; could / should I combine into one wrapper?
+        wrapper = function(msg) {
+            return interpreter.createPrimitive( ubRacer.display(msg.toString()) );
+        };
+        interpreter.setProperty(interpreter.ubRacer, 'display', interpreter.createNativeFunction(wrapper));
+
+        wrapper = function(carName, sensorName, direction, length, colour) {
+            return interpreter.createPrimitive( ubRacer.addSensor(carName.toString(), sensorName.toString(), direction.toNumber(), length.toNumber(), colour.toString()) );
+        };
+        interpreter.setProperty(interpreter.ubRacer, 'addSensor', interpreter.createNativeFunction(wrapper));
+        
+        wrapper = function(carName, steering) {
+            return interpreter.createPrimitive( ubRacer.steer(carName.toString(), steering.toNumber()) );
+        };
+        interpreter.setProperty(interpreter.ubRacer, 'steer', interpreter.createNativeFunction(wrapper));
+        
+        wrapper = function(carName, throttle) {
+            return interpreter.createPrimitive( ubRacer.throttle(carName.toString(), throttle.toNumber()) );
+        };
+        interpreter.setProperty(interpreter.ubRacer, 'throttle', interpreter.createNativeFunction(wrapper));
     }
 };
 

@@ -198,10 +198,36 @@ UBR.init = function() {
 window.addEventListener('load', UBR.init);
 
 /**
- * Execute the user's code.
- * Just a quick and dirty eval.  Catch infinite loops.
+ * Execute the user's code using javascript interpreter.
  */
 UBR.runJS = function() {
+
+  // TODO: halt any existing interpreter
+  // see view-source:https://blockly-demo.appspot.com/static/demos/interpreter/index.html  
+  // I think enough to put the interpreter in a global variable and over-write it on each run
+  
+  var code = Blockly.JavaScript.workspaceToCode();
+  var interpreter = new Interpreter(code, ubRacer.initBlocklyInterpreter);
+
+  // TODO: is fixed step counter per "tick" ok or should I use some sort of timer?
+  var running = true;
+  var stepInterpreter = function() {
+    var steps = 100;
+    while (running && (steps > 0)) {
+      running = interpreter.step();
+      steps--;
+    }
+  }
+  
+  window.setInterval(stepInterpreter, 1);
+};
+
+/**
+ * Execute the user's code.
+ * Just a quick and dirty eval.  Catch infinite loops.
+ * NOT USED. (Don't be Eval)
+ */
+UBR.runJS_EVAL = function() {
   Blockly.JavaScript.INFINITE_LOOP_TRAP = '  checkTimeout();\n';
   var timeouts = 0;
   var checkTimeout = function() {

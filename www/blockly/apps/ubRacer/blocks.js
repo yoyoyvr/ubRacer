@@ -44,7 +44,7 @@ Blockly.Blocks['ubracer_display'] = {
 
 Blockly.JavaScript['ubracer_display'] = function(block) {
   var msg = Blockly.JavaScript.valueToCode(block, 'MSG', Blockly.JavaScript.ORDER_ATOMIC);
-  var code = 'ubRacer.display(' + msg + ');'
+  var code = 'ubRacer.display(' + msg + ');\n';
   return code;
 };
 
