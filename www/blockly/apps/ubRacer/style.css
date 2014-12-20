@@ -89,6 +89,10 @@ button {
   margin: 1px 5px;
 }
 
+.textbutton {
+  height: 21px;
+}
+
 /* Sprited icons. */
 .icon21 {
   height: 21px;
@@ -97,6 +101,14 @@ button {
 }
 .trash {
   background-position: 0px 0px;
+}
+.save {
+  background-position: -21px 0px;
+  height: 21px;
+}
+.load {
+  background-position: -21px 0px;
+  height: 21px;
 }
 .link {
   background-position: -21px 0px;
