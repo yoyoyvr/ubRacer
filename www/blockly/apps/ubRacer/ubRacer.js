@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview JavaScript for uBlockly's ubRacer application.
+ * @fileoverview JavaScript for ubRacer Blockly application.
  * @author yoyo@zeroandone.ca (Yossarian King)
  */
 
@@ -244,8 +244,14 @@ UBR.runJS_EVAL = function() {
 
 /**
  * Save the user's code as XML in local storage.
+ * TODO: support for multiple named saves (and load)
  */
 UBR.saveWorkspace = function() {
+    if (localStorage == null) {
+        alert("Your browser does not support local storage. Can't save workspace.");
+        return;
+    }
+    
     var xmlDom = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
     
@@ -256,6 +262,11 @@ UBR.saveWorkspace = function() {
  * Load user's code from local storage to workspace.
  */
 UBR.loadWorkspace = function() {
+    if (localStorage == null) {
+        alert("Your browser does not support local storage. Can't load workspace.");
+        return;
+    }
+    
     var xmlText = localStorage.getItem("uBlockly.document.xml.default");
     if (xmlText == null) {
         xmlText = '<xml xmlns="http://www.w3.org/1999/xhtml"></xml>';
