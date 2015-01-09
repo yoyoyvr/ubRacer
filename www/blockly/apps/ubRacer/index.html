@@ -30,6 +30,10 @@
 </head>
 
 <body>
+  <table width="100%" height="100%">
+  <tr>
+  
+  <td width="960px">
   <!-- Unity web player. -->
   <div id="unityBody">
     <div id="unityContent">
@@ -48,12 +52,18 @@
     </div>
     <p class="footer">&laquo; created with <a href="http://unity3d.com/unity/" title="Go to unity3d.com">Unity</a> &raquo;</p>
   </div>
-
+  </td>
+  
+  <td height="100%">
   <!-- Blockly coding. -->
   <script type="text/javascript">
     document.write(codepage.start({}, null,
         {lang: BlocklyApps.LANG,
          langSrc: BlocklyApps.languagePack()}));
   </script>
+  </td>
+  
+  </tr>
+  </table>
 </body>
 </html>
